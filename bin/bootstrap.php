@@ -1,19 +1,14 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * This file is part of Swoft.
  *
- * @link https://swoft.org
- * @document https://doc.swoft.org
- * @contact group@swoft.org
- * @license https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ * @link     https://swoft.org
+ * @document https://swoft.org/docs
+ * @contact  group@swoft.org
+ * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
  */
 
-require_once dirname(__DIR__) . '/vendor/autoload.php';
-require_once dirname(__DIR__) . '/config/define.php';
+/** @var \Composer\Autoload\ClassLoader $loader */
+$loader = require dirname(__DIR__) . '/vendor/autoload.php';
 
-// init the factory of bean
-\Swoft\Bean\BeanFactory::init();
-
-/* @var \Swoft\Bootstrap\Boots\Bootable $bootstrap*/
-$bootstrap = \Swoft\App::getBean(\Swoft\Bootstrap\Bootstrap::class);
-$bootstrap->bootstrap();
+// $loader->addPsr4('Swoft\\Cache\\', 'vendor/swoft/cache/src/');

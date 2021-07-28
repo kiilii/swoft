@@ -1,26 +1,32 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * This file is part of Swoft.
  *
- * @link https://swoft.org
- * @document https://doc.swoft.org
- * @contact group@swoft.org
- * @license https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ * @link     https://swoft.org
+ * @document https://swoft.org/docs
+ * @contact  group@swoft.org
+ * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
  */
 
-require_once dirname(__DIR__) . '/vendor/autoload.php';
-require_once dirname(__DIR__) . '/config/define.php';
+use AppTest\Testing\TestApplication;
 
-// init
-\Swoft\App::$isInTest = true;
+$baseDir = dirname(__DIR__);
+$vendor  = dirname(__DIR__) . '/vendor';
 
-\Swoft\Bean\BeanFactory::init();
-\Swoft\Bean\BeanFactory::reload([
-    'application' => [
-        'class' => \Swoft\Testing\Application::class,
-        'inTest' => true
-    ],
-]);
+/** @var \Composer\Autoload\ClassLoader $loader */
+$loader = require dirname(__DIR__) . '/vendor/autoload.php';
 
-$initApplicationContext = new \Swoft\Core\InitApplicationContext();
-$initApplicationContext->init();
+$swoftFwDir = $vendor . '/swoft/framework';
+
+// in framework developing
+if (file_exists($vendor . '/swoft/component/src/framework')) {
+    $swoftFwDir = $vendor . '/swoft/component/src/framework';
+}
+
+$loader->addPsr4('AppTest\\Unit\\', $baseDir . '/test/unit/');
+$loader->addPsr4('AppTest\\Testing\\', $baseDir . '/test/testing/');
+$loader->addPsr4('SwoftTest\\Testing\\', $swoftFwDir . '/test/testing/');
+// $loader->addPsr4('Swoft\\Swlib\\', $vendor . '/swoft/swlib/src/');
+
+$app = new TestApplication($baseDir);
+$app->run();
